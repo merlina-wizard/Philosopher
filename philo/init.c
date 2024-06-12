@@ -6,54 +6,67 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 15:16:11 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/11 17:18:55 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:20:19 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_input(int argc, char **argv, t_philo *philos)
+void	init_input(char **argv, t_philo *philos)
 {
-	int i;
-
-	i = 0;
-	philos[0].num_of_philos= 1;
-	while(i < philos[0].num_of_philos)
-	{
-		philos[i].id = i + 1;
-		philos[i].num_of_philos = ft_atoi(argv[1]);
-		philos[i].time_to_die = ft_atoi(argv[2]);
-		philos[i].time_to_eat = ft_atoi(argv[3]);
-		philos[i].time_to_sleep = ft_atoi(argv[4]);
-		if (argc == 5 && argc == 6)
-			philos[i].num_times_to_eat = ft_atoi(argv[5]);
+	philos->num_of_philos = ft_atoi(argv[1]);
+	philos->time_to_die = ft_atoi(argv[2]);
+	philos->time_to_eat = ft_atoi(argv[3]);
+	philos->time_to_sleep = ft_atoi(argv[4]);
+		if (argv[5])
+			philos->num_times_to_eat = ft_atoi(argv[5]);
 		else
-			philos[i].num_times_to_eat = -1;
-		i++;
-	}
-	return (0);
+			philos->num_times_to_eat = -1;
 }
 
-void	init_philos(t_philo *philos, t_program *program, char **argv)
+void	init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks,char **argv)
 {
 	int	i;
 
 	i = 0;
 	while (i < ft_atoi(argv[1]))
 	{
-		pthread_mutex_init(philos[i].l_fork, NULL);
+		philos[i].id = i + 1;
 		philos[i].eating = 0;
 		philos[i].meals_eaten = 0;
+		init_input(argv, &philos[i]);
 		//philos[i].start_time = get_current_time();
 		//philos[i].last_meal = get_current_time();
 		philos[i].write_lock = &program->write_lock;
 		philos[i].dead_lock = &program->dead_lock;
 		philos[i].meal_lock = &program->meal_lock;
 		philos[i].dead = &program->dead_flag;
+		philos[i].l_fork = &forks[i];
 		if (i == 0)
 			philos[i].r_fork = philos[philos[0].num_of_philos - 1].l_fork;
 		else
 			philos[i].r_fork = philos[i - 1].l_fork;
+		i++;
+	}
+}
+
+void	init_prog(t_program *program, t_philo *philos)
+{
+	program->dead_flag = 0;
+	program->philos = philos;
+	pthread_mutex_init(&program->dead_lock, NULL);
+	pthread_mutex_init(&program->meal_lock, NULL);
+	pthread_mutex_init(&program->write_lock, NULL);
+}
+
+void init_forks(pthread_mutex_t *forks, int philo_num)
+{
+	int i;
+
+	i = 0;
+	while(i < philo_num)
+	{
+		pthread_mutex_init(&forks[i], NULL);
 		i++;
 	}
 }

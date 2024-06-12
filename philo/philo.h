@@ -6,7 +6,7 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:44:13 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/11 17:11:22 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:21:42 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ typedef struct s_program
 }					t_program;
 
 //
-int	validation(int argc, char **mat);
-int main(int argc, char **argv);
-int	init_input(int argc, char **argv, t_philo *philos);
-void	init_philos(t_philo *philos, t_program *program, char **argv);
+int			validation(int argc, char **mat);
+int 		main(int argc, char **argv);
+void		init_input(char **argv, t_philo *philos);
+void 		init_forks(pthread_mutex_t *forks, int philo_num);
+void		init_prog(t_program *program, t_philo *philos);
+void		init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks, char **argv);
 long long	ft_atoi(const char *str);
 #endif
