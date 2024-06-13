@@ -6,15 +6,53 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 19:08:10 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/12 20:16:43 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:50:45 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void print(char *str, t_philo *philo, int id)
+{
+	size_t time;
+
+	pthread_mutex_lock(philo->write_lock);
+	time = milltime() - philo->start_time;
+	if 
+}
+void	dream(t_philo *philo)
+{
+	printf("philo x is sleeping");
+	usleep(philo->time_to_sleep);
+}
+
+void	think(t_philo *philo)
+{
+	printf("Philo x is thinking\n");
+}
+
+void eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->r_fork);
+	printf("has taken the fork");
+	pthread_mutex_lock(philo->l_fork);
+	printf("has taken the fork");
+	philo->eating = 1;
+	printf("is eating");
+	pthread_mutex_lock(philo->meal_lock);
+	philo->last_meal = milltime();
+	philo->meals_eaten++;
+	pthread_mutex_unlock(philo->meal_lock);
+	usleep(philo->time_to_eat);
+	philo->eating = 0;
+	pthread_mutex_unlock(philo->l_fork);
+	pthread_mutex_unlock(philo->r_fork);
+}
+
 void *routine(void *ptr)
 {
 	t_philo *philo;
+
 
 	philo = (t_philo *)ptr;
 	while (!dead_loop(philo))

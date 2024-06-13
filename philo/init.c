@@ -6,11 +6,19 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 15:16:11 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/12 17:20:19 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:25:30 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long	milltime(void)
+{
+	struct timeval time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
 
 void	init_input(char **argv, t_philo *philos)
 {
@@ -35,8 +43,8 @@ void	init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks,cha
 		philos[i].eating = 0;
 		philos[i].meals_eaten = 0;
 		init_input(argv, &philos[i]);
-		//philos[i].start_time = get_current_time();
-		//philos[i].last_meal = get_current_time();
+		philos[i].start_time = milltime();
+		philos[i].last_meal = milltime();
 		philos[i].write_lock = &program->write_lock;
 		philos[i].dead_lock = &program->dead_lock;
 		philos[i].meal_lock = &program->meal_lock;

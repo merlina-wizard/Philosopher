@@ -6,7 +6,7 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:44:13 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/12 17:21:42 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:40:09 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <limits.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 # define PHILO_MAX 300
 
@@ -61,4 +62,5 @@ void 		init_forks(pthread_mutex_t *forks, int philo_num);
 void		init_prog(t_program *program, t_philo *philos);
 void		init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks, char **argv);
 long long	ft_atoi(const char *str);
+long		milltime(void);
 #endif
