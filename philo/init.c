@@ -6,7 +6,7 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 15:16:11 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/13 12:25:30 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:18:16 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ long	milltime(void)
 	struct timeval time;
 
 	gettimeofday(&time, NULL);
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 

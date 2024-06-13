@@ -6,7 +6,7 @@
 /*   By: mamerlin <mamerlin@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 19:08:10 by mamerlin          #+#    #+#             */
-/*   Updated: 2024/06/13 12:50:45 by mamerlin         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:13:37 by mamerlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,29 @@ void print(char *str, t_philo *philo, int id)
 
 	pthread_mutex_lock(philo->write_lock);
 	time = milltime() - philo->start_time;
-	if 
+	if (!dead(philo))
+		printf("%zu %d %s\n", time, id, str);
+	pthread_mutex_unlock(philo->write_lock);
 }
 void	dream(t_philo *philo)
 {
-	printf("philo x is sleeping");
+	print("is sleeping", philo, philo->id);
 	usleep(philo->time_to_sleep);
 }
 
 void	think(t_philo *philo)
 {
-	printf("Philo x is thinking\n");
+	print("is thinking", philo, philo->id);
 }
 
 void eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
-	printf("has taken the fork");
+	print("has taken a fork", philo, philo->id);
 	pthread_mutex_lock(philo->l_fork);
-	printf("has taken the fork");
+	print("has taken a fork", philo, philo->id);
 	philo->eating = 1;
-	printf("is eating");
+	print("is eating", philo, philo->id);
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = milltime();
 	philo->meals_eaten++;
